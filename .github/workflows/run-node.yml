@@ -1,1 +1,30 @@
 
+name: Run Flop Labs Signing Node
+
+on:
+  # يشتغل الكود تلقائياً كلما قام بعمل Push أو تحديث للمستودع
+  push:
+    branches: [ main, master ]
+  # يتيح له تشغيل الكود يدوياً بكبسة زر من تبويب Actions
+  workflow_dispatch:
+
+jobs:
+  run-node:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Run Node Script
+      # استبدل node.js باسم الملف الحقيقي إذا كان مختلفاً
+      run: node node.js 
+      env:
+        # ربط المفتاح السري المرفوع في إعدادات جيت هاب
+        MY_SECRET_SEED: ${{ secrets.MY_SECRET_SEED }}
+        NODE_MY_DID: "did:key:z6MkkC4yHPE3RJMkbSmwhYVPkrHSZ6XpCswccawJGLMwrLLQ"
