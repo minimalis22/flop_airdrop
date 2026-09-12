@@ -16,11 +16,11 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        # قمنا بترقيتها إلى 24 لإلغاء تحذير التوقف في جيت هاب
+        node-version: '24' 
 
     - name: Execute Node.mjs Script
       run: node node.mjs
       env:
-        # هنا يتم ربط السيكورتي SECURITY_SEED ليتعرف عليه الملف البرمجي
         MY_SECRET_SEED: ${{ secrets.SECURITY_SEED }}
         NODE_MY_DID: "did:key:z6MkkC4yHPE3RJMkbSmwhYVPkrHSZ6XpCswccawJGLMwrLLQ"
