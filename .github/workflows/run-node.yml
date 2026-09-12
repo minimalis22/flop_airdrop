@@ -13,11 +13,15 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
+    - name: Setup Node.js (Latest Version)
       uses: actions/setup-node@v4
       with:
-        # قمنا بترقيتها إلى 24 لإلغاء تحذير التوقف في جيت هاب
+        # تم التحديث إلى إصدار 24 المتوافق مع خوادم جيت هاب الجديدة لتفادي التحذير
         node-version: '24' 
+
+    - name: Install Network Dependencies
+      # أمر مضاف لتهيئة الحزم التلقائية قبل تشغيل ملف node.mjs
+      run: npm install
 
     - name: Execute Node.mjs Script
       run: node node.mjs
