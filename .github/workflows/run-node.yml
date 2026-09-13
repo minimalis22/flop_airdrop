@@ -1,28 +1,26 @@
-name: Run Official Flop Stealth Agent
+name: Run Flop Labs Node v5
+
 on:
-  schedule:
-    - cron: '15 2,7,13,19,22 * * *'
+  push:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  start-agent:
+  run-node-job:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository Code
-        uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24' # الترقية الكاملة والمستقبلية إلى الإصدار 24 لإنهاء التحذير كلياً
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
 
-      - name: Install Network Dependencies
-        run: |
-          if [ -f package.json ]; then
-            npm install
-          fi
-
-      - name: Execute Stealth Core Cycle
-        run: node index.js
-        env:
-          MY_SECRET_SEED: ${{ secrets.MY_SECRET_SEED }}
+    - name: Execute Node.mjs Script
+      run: node node.mjs
+      env:
+        # تم تعديل الاسم هنا ليقرأ من SECURITY_SEED  
+        MY_SECRET_SEED: ${{ secrets.SECURITY_SEED }}
+        NODE_MY_DID: "did:key:z6MkkC4yHPE3RJMkbSmwhYVPkrHSZ6XpCswccawJGLMwrLLQ"
