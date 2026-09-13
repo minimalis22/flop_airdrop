@@ -1,8 +1,6 @@
-name: Run Flop Labs Node v5
+name: run-node-job
 
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -10,21 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      # 1. جلب الكود من المستودع باستخدام أحدث إصدار متوافق
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js (Latest Version)
-      uses: actions/setup-node@v4
-      with:
-        # تم التحديث إلى إصدار 24 المتوافق مع خوادم جيت هاب الجديدة لتفادي التحذير
-        node-version: '24' 
+      # 2. إعداد بيئة Node.js وتحديث الإصدار إلى 24 لتجنب التحذير
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24' # تم التحديث من 20 إلى 24
 
-    - name: Install Network Dependencies
-      # أمر مضاف لتهيئة الحزم التلقائية قبل تشغيل ملف node.mjs
-      run: npm install
-
-    - name: Execute Node.mjs Script
-      run: node node.mjs
-      env:
-        MY_SECRET_SEED: ${{ secrets.SECURITY_SEED }}
-        NODE_MY_DID: "did:key:z6MkkC4yHPE3RJMkbSmwhYVPkrHSZ6XpCswccawJGLMwrLLQ"
+      # 3. تثبيت المكتبات (إن وجدت) وتشغيل السكربت الخاص بك
+      - name: Install dependencies and run script
+        run: |
+          npm install
+          node node.mjs
