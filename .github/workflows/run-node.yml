@@ -1,25 +1,28 @@
-name: run-node-job
-
+name: Run Official Flop Stealth Agent
 on:
+  schedule:
+    - cron: '15 2,7,13,19,22 * * *'
   workflow_dispatch:
 
 jobs:
-  run-node-job:
+  start-agent:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. جلب الكود من المستودع باستخدام أحدث إصدار متوافق
-      - name: Checkout repository
+      - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      # 2. إعداد بيئة Node.js وتحديث الإصدار إلى 24 لتجنب التحذير
-      - name: Setup Node.js
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # تم التحديث من 20 إلى 24
+          node-version: '24' # الترقية الكاملة والمستقبلية إلى الإصدار 24 لإنهاء التحذير كلياً
 
-      # 3. تثبيت المكتبات (إن وجدت) وتشغيل السكربت الخاص بك
-      - name: Install dependencies and run script
+      - name: Install Network Dependencies
         run: |
-          npm install
-          node node.mjs
+          if [ -f package.json ]; then
+            npm install
+          fi
+
+      - name: Execute Stealth Core Cycle
+        run: node index.js
+        env:
+          MY_SECRET_SEED: ${{ secrets.MY_SECRET_SEED }}
